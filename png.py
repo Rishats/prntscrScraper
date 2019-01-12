@@ -1,7 +1,4 @@
-#Credits to 'nazarpechka' for helping out with this code
-
 import string, random, os, sys, _thread, httplib2, time
-# from PIL import Image
 
 if len(sys.argv) < 2:
     sys.exit("\033[37mUsage: python3 " + sys.argv[0] + " (Number of threads)")
@@ -20,26 +17,24 @@ if not os.path.isdir("images_png"):
 
 def scrape_pictures(thread):
     while True:
-        #url = 'http://img.prntscr.com/img?url=http://i.imgur.com/'
         url = 'http://i.imgur.com/'
         length = random.choice((5, 6))
         if length == 6:
-            url += ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(7))
+            url += ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
             url += '.png'
 
-            filename = url.rsplit('/', 1)[-1]
-            # print (filename)
+            file_name = url.rsplit('/', 1)[-1]
 
-            h = httplib2.Http('.cache' + thread)
+            h = httplib2.Http('images_png/.cache' + thread)
             response, content = h.request(url)
-            out = open(filename, 'wb')
+            out = open(os.path.join('images_png', file_name), 'wb')
             out.write(content)
             out.close()
 
-            file_size = os.path.getsize(filename)
+            file_size = os.path.getsize(os.path.join('images_png', file_name))
             if file_size in INVALID:
                 print("[-] Invalid: " + url)
-                os.remove(filename)
+                os.remove(os.path.join('images_png', file_name))
             else:
                 print("[+] Valid: " + url)
 
