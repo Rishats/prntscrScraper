@@ -1,0 +1,6 @@
+*
+!.gitignore
+!jpg.py
+!png.py
+!requirements.txt
+!README.md
